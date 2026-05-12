@@ -8,7 +8,7 @@ import { defineConfig, loadEnv } from 'vite';
 export default defineConfig(({ mode }) => {
   // Load env from repo root so PORT from .env is available
   const env = loadEnv(mode, path.resolve(__dirname, '../..'), '');
-  const apiPort = env.PORT ?? '3090';
+  const apiPort = env.PORT ?? '19741';
 
   // Read version from root package.json
   const rootPkgPath = path.resolve(__dirname, '../../package.json');

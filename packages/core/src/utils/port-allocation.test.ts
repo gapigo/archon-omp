@@ -62,12 +62,24 @@ describe('getPort', () => {
     expect(port).toBe(4000);
   });
 
-  it('should return a valid port when no PORT env is set', async () => {
+  it('should return config port when provided and no PORT env', async () => {
     delete process.env.PORT;
-    // Note: If running in a worktree, port will be auto-allocated (base 3090 + offset 100-999)
-    // If running in main repo, port will be 3090
+    const port = await getPort(19741);
+    expect(port).toBe(19741);
+  });
+
+  it('should prefer PORT env over config port', async () => {
+    process.env.PORT = '4000';
+    const port = await getPort(19741);
+    expect(port).toBe(4000);
+  });
+
+  it('should return a valid port when no PORT env or config port', async () => {
+    delete process.env.PORT;
+    // Note: If running in a worktree, port will be auto-allocated (base 19741 + offset 100-999)
+    // If running in main repo, port will be 19741
     const port = await getPort();
-    const basePort = 3090;
+    const basePort = 19741;
     const maxPort = basePort + 999;
     expect(port).toBeGreaterThanOrEqual(basePort);
     expect(port).toBeLessThanOrEqual(maxPort);
@@ -75,8 +87,9 @@ describe('getPort', () => {
 });
 
 // Integration test notes (manual verification):
-// 1. Run in main repo: `bun dev` → should use port 3000 with log "Using default port"
-// 2. Run in worktree: `bun dev` → should auto-allocate port 3XXX with "Worktree detected" log
+// 1. Run in main repo: `bun dev` → should use port 19741 with log "Using default port"
+// 2. Run in worktree: `bun dev` → should auto-allocate port 19XXX with "Worktree detected" log
 // 3. Override: `PORT=4000 bun dev` → should use 4000 (both contexts)
-// 4. Multiple worktrees: Start in 2+ worktrees → different ports
-// 5. Invalid PORT: `PORT=abc bun dev` → should exit with error message
+// 4. Override from config: set server.port in ~/.archon/config.yaml
+// 5. Multiple worktrees: Start in 2+ worktrees → different ports
+// 6. Invalid PORT: `PORT=abc bun dev` → should exit with error message

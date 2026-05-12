@@ -468,7 +468,7 @@ export async function startServer(opts: ServerOptions = {}): Promise<void> {
 
   // Setup Hono server
   const app = new OpenAPIHono({ defaultHook: validationErrorHook });
-  const port = opts.port ?? (await getPort());
+  const port = opts.port ?? (await getPort(config.server?.port));
 
   // Global error handler for unhandled exceptions
   app.onError((err, c) => {

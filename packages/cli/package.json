@@ -1,10 +1,13 @@
 {
-  "name": "@archon/cli",
-  "version": "0.3.10",
+  "name": "archon-omp",
+  "version": "0.1.0",
   "type": "module",
   "main": "./src/cli.ts",
   "bin": {
-    "archon": "./src/cli.ts"
+    "archon-omp": "./bin/archon-omp.mjs"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "cli": "bun src/cli.ts",

@@ -1,3 +1,83 @@
+## archon-omp — Fork with oh-my-pi provider
+
+This fork adds [oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`) as a community provider alongside the existing pi-mono provider. The oh-my-pi provider wraps the `omp` CLI as a subprocess provider for AI assistant backends.
+
+### Windows Installation (Git Bash only — no PowerShell)
+
+```bash
+git clone https://github.com/gapigo/archon-omp
+cd archon-omp
+bun install
+bun run build
+# Add to ~/.bashrc:
+export PATH="$PATH:$(pwd)/node_modules/.bin"
+echo 'alias archon-omp="bun ~/workspace/archon-omp/packages/cli/src/cli.ts"' >> ~/.bashrc
+source ~/.bashrc
+```
+
+### Configure oh-my-pi
+
+```bash
+mkdir -p ~/.archon ~/.pi/agent
+cat > ~/.archon/config.yaml << 'EOF'
+assistants:
+  default: oh-my-pi
+  oh-my-pi:
+    model: deepseek/deepseek-v4-flash
+    binaryPath: auto
+server:
+  port: 19741
+EOF
+
+cat > ~/.pi/agent/models.json << 'EOF'
+{
+  "providers": {
+    "deepseek": {
+      "baseUrl": "https://api.deepseek.com",
+      "api": "openai-completions",
+      "apiKey": "DEEPSEEK_API_KEY",
+      "models": [
+        {
+          "id": "deepseek-v4-flash",
+          "name": "DeepSeek V4 Flash",
+          "reasoning": true,
+          "input": ["text"],
+          "contextWindow": 1000000,
+          "maxTokens": 384000
+        }
+      ]
+    }
+  }
+}
+EOF
+
+export DEEPSEEK_API_KEY="your-key-here"
+```
+
+### Run
+
+```bash
+cd your-project
+archon-omp workflow run archon-assist --no-worktree
+# Web UI:
+archon-omp serve
+# Opens at http://localhost:19741
+```
+### npm Package
+
+```bash
+# Publish to npm (requires `npm adduser` first):
+cd packages/cli
+npm publish --access public
+```
+
+> **Note:** npm publish requires authentication. Run `npm adduser` and log in first.
+>
+> The package requires Bun runtime (`bun` must be on PATH).
+
+---
+
+
 <p align="center">
   <img src="assets/logo.png" alt="Archon" width="160" />
 </p>

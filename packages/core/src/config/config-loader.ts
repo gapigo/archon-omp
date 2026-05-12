@@ -403,6 +403,10 @@ function mergeGlobalConfig(defaults: MergedConfig, global: GlobalConfig): Merged
   if (global.concurrency?.maxConversations) {
     result.concurrency.maxConversations = global.concurrency.maxConversations;
   }
+  // Server preferences
+  if (global.server?.port) {
+    result.server = { port: global.server.port };
+  }
 
   return result;
 }
@@ -597,5 +601,6 @@ export function toSafeConfig(config: MergedConfig): SafeConfig {
       loadDefaultCommands: config.defaults.loadDefaultCommands,
       loadDefaultWorkflows: config.defaults.loadDefaultWorkflows,
     },
+    server: config.server ? { port: config.server.port } : undefined,
   };
 }

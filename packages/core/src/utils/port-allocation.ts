@@ -30,13 +30,17 @@ export function calculatePortOffset(path: string): number {
  * Get the port for the Hono server
  * - If PORT env var is set: use it (explicit override, validated)
  * - If running in worktree: auto-allocate deterministic port based on path hash
- * - Otherwise: use default 3090 (matches the Vite proxy fallback in packages/web/vite.config.ts)
+ * - From config.yaml server.port (if set)
+ * - In worktree: auto-allocate deterministic port based on path hash (base 19741 + offset 100-999)
+ * - Otherwise: use default 19741
+ *
  *
  * Note: Exits process with code 1 if PORT env var is set but invalid (not 1-65535)
  */
-export async function getPort(): Promise<number> {
+export async function getPort(configPort?: number): Promise<number> {
   const envPort = process.env.PORT;
 
+  // Priority 1: PORT env var (explicit override)
   if (envPort) {
     const parsedPort = Number(envPort);
     if (!Number.isInteger(parsedPort) || parsedPort < 1 || parsedPort > 65535) {
@@ -46,7 +50,14 @@ export async function getPort(): Promise<number> {
     return parsedPort;
   }
 
-  const basePort = 3090;
+  // Priority 2: config file port
+  if (configPort) {
+    getLog().info({ port: configPort }, 'config_port_selected');
+    return configPort;
+  }
+
+  // Priority 3: worktree auto-allocation (legacy offset-based)
+  const basePort = 19741;
   const cwd = process.cwd();
 
   if (await isWorktreePath(cwd)) {

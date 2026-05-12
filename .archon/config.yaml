@@ -1,5 +1,5 @@
-worktree:
-  baseBranch: dev
-
-docs:
-  path: packages/docs-web/src/content/docs
+assistants:
+  default: oh-my-pi
+  oh-my-pi:
+    model: deepseek/deepseek-v4-flash
+    binaryPath: auto

@@ -113,6 +113,16 @@ export interface GlobalConfig {
      */
     maxConversations?: number;
   };
+  /**
+   * Server settings
+   */
+  server?: {
+    /**
+     * HTTP server port
+     * @default 19741
+     */
+    port?: number;
+  };
 }
 
 /**
@@ -298,6 +308,12 @@ export interface MergedConfig {
    * Undefined when no env vars are configured.
    */
   envVars?: Record<string, string>;
+  /**
+   * Server settings (from global config)
+   */
+  server?: {
+    port?: number;
+  };
 }
 
 /**
@@ -320,5 +336,8 @@ export interface SafeConfig {
     copyDefaults: boolean;
     loadDefaultCommands: boolean;
     loadDefaultWorkflows: boolean;
+  };
+  server?: {
+    port?: number;
   };
 }

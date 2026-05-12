@@ -97,6 +97,24 @@ export interface PiProviderDefaults {
    */
   maxConcurrent?: number;
 }
+/**
+ * Community provider defaults for oh-my-pi (omp CLI).
+ * v1 — wraps omp as a subprocess.
+ */
+export interface OhMyPiProviderDefaults {
+  [key: string]: unknown;
+  /** Default model ref in '<provider>/<modelId>' format, e.g. 'deepseek/deepseek-v4-flash' */
+  model?: string;
+  /**
+   * Path to the omp binary. Overrides auto-detection:
+   * 1. assistants["oh-my-pi"].binaryPath from .archon/config.yaml
+   * 2. OMP_BIN_PATH env var
+   * 3. `which omp` on PATH
+   * 4. node_modules/.bin/omp.cmd (Windows fallback)
+   * @default 'auto'
+   */
+  binaryPath?: string;
+}
 
 /** Generic per-provider defaults bag used by config surfaces and UI. */
 export type ProviderDefaults = Record<string, unknown>;

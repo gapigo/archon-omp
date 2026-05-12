@@ -53,3 +53,10 @@ export {
   registerPiProvider,
   type PiProviderDefaults,
 } from './community/pi';
+
+export {
+  OhMyPiProvider,
+  parseOmpConfig,
+  registerOhMyPiProvider,
+  type OhMyPiProviderDefaults,
+} from './community/oh-my-pi';
