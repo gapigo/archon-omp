@@ -2,19 +2,28 @@
 
 This fork adds [oh-my-pi](https://github.com/can1357/oh-my-pi) (`omp`) as a community provider alongside the existing pi-mono provider. The oh-my-pi provider wraps the `omp` CLI as a subprocess provider for AI assistant backends.
 
-### Windows Installation (Git Bash only — no PowerShell)
+### Quick Install (npm)
+
+Once published to npm:
+```bash
+npm install -g archon-omp
+```
+
+Then verify:
+```bash
+archon-omp --help
+```
+
+### Build from Source
 
 ```bash
 git clone https://github.com/gapigo/archon-omp
 cd archon-omp
 bun install
+cd packages/cli
 bun run build
-# Add to ~/.bashrc:
-export PATH="$PATH:$(pwd)/node_modules/.bin"
-echo 'alias archon-omp="bun ~/workspace/archon-omp/packages/cli/src/cli.ts"' >> ~/.bashrc
-source ~/.bashrc
+npm link   # or: npm install -g ./archon-omp-0.1.0.tgz
 ```
-
 ### Configure oh-my-pi
 
 ```bash
@@ -63,17 +72,20 @@ archon-omp workflow run archon-assist --no-worktree
 archon-omp serve
 # Opens at http://localhost:19741
 ```
-### npm Package
+### Publishing to npm
 
 ```bash
-# Publish to npm (requires `npm adduser` first):
+# Build the CLI bundle first:
 cd packages/cli
+bun run build
+
+# Publish (requires `npm adduser` first):
 npm publish --access public
 ```
 
 > **Note:** npm publish requires authentication. Run `npm adduser` and log in first.
 >
-> The package requires Bun runtime (`bun` must be on PATH).
+> The published package is a self-contained Node.js bundle — no Bun required.
 
 ---
 

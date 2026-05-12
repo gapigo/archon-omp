@@ -1,32 +1,33 @@
 {
   "name": "archon-omp",
   "version": "0.1.0",
+  "description": "Oh My Pi (omp) fork of Archon — AI workflow engine for coding agents",
   "type": "module",
-  "main": "./src/cli.ts",
   "bin": {
     "archon-omp": "./bin/archon-omp.mjs"
+  },
+  "files": [
+    "bin/",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=20"
   },
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gapigo/archon-omp.git"
+  },
+  "homepage": "https://github.com/gapigo/archon-omp#readme",
+  "bugs": {
+    "url": "https://github.com/gapigo/archon-omp/issues"
+  },
   "scripts": {
-    "cli": "bun src/cli.ts",
-    "test": "bun test src/commands/version.test.ts src/commands/setup.test.ts src/commands/skill.test.ts src/commands/doctor.test.ts && bun test src/commands/workflow.test.ts && bun test src/commands/isolation.test.ts && bun test src/commands/chat.test.ts && bun test src/commands/serve.test.ts",
-    "type-check": "bun x tsc --noEmit"
+    "build": "bun run build.mjs"
   },
   "dependencies": {
-    "@archon/adapters": "workspace:*",
-    "@archon/core": "workspace:*",
-    "@archon/git": "workspace:*",
-    "@archon/isolation": "workspace:*",
-    "@archon/paths": "workspace:*",
-    "@archon/providers": "workspace:*",
-    "@archon/server": "workspace:*",
-    "@archon/workflows": "workspace:*",
-    "@clack/prompts": "^1.0.0",
-    "dotenv": "^17.2.3"
-  },
-  "devDependencies": {
-    "@types/node": "^22.0.0"
+    "better-sqlite3": "^12.10.0"
   }
 }
